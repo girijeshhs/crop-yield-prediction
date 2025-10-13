@@ -1,0 +1,5 @@
+crop_yield_model.cbm
+crop_yield_model.pkl
+disease_model.h5
+.venv/
+__pycache__/
