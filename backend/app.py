@@ -6,6 +6,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from PIL import Image
 import numpy as np
+import pandas as pd
 
 try:
     from catboost import CatBoostRegressor
@@ -51,7 +52,11 @@ def _load_disease_model():
     return load_model(DISEASE_MODEL_PATH)
 
 
-def _preprocess_features(payload: dict) -> Tuple[List[str], np.ndarray]:
+def _preprocess_features(payload: dict) -> Tuple[List[str], pd.DataFrame]:
+    # Map frontend fields to model's expected features
+    # Model expects: Region, Soil_Type, Crop, Rainfall_mm, Temperature_Celsius, 
+    #                Fertilizer_Used, Irrigation_Used, Weather_Condition, Days_to_Harvest
+    
     required = [
         "temperature",
         "humidity",
@@ -65,20 +70,25 @@ def _preprocess_features(payload: dict) -> Tuple[List[str], np.ndarray]:
     if missing:
         raise ValueError(f"Missing fields: {', '.join(missing)}")
 
-    numeric_values = np.array([
-        float(payload["temperature"]),
-        float(payload["humidity"]),
-        float(payload["water_flow"]),
-        float(payload["latitude"]),
-        float(payload["longitude"]),
-    ])
+    # Create DataFrame with the EXACT feature order the model was trained with
+    features_df = pd.DataFrame([{
+        "Region": f"Lat{payload['latitude']}_Lon{payload['longitude']}",  # Derive region from coordinates
+        "Soil_Type": str(payload["soil_type"]).title(),  # Clay, Sandy, Loamy, Peaty
+        "Crop": str(payload["crop_type"]).title(),  # Wheat, Rice, Maize, Soybean
+        "Rainfall_mm": float(payload["water_flow"]) * 1.5,  # Approximate rainfall from water flow
+        "Temperature_Celsius": float(payload["temperature"]),
+        "Fertilizer_Used": 1,  # Default: assume fertilizer is used
+        "Irrigation_Used": 1,  # Default: assume irrigation is used
+        "Weather_Condition": "Normal" if 20 <= float(payload["temperature"]) <= 30 else "Extreme",
+        "Days_to_Harvest": int(100 + float(payload["humidity"]) * 0.5),  # Estimate based on humidity
+    }])
 
     categorical_values = [
         str(payload["soil_type"]).lower(),
         str(payload["crop_type"]).lower(),
     ]
 
-    return categorical_values, numeric_values.reshape(1, -1)
+    return categorical_values, features_df
 
 
 def _recommend_crops(soil_type: str, base_crop: str) -> List[str]:
@@ -120,11 +130,21 @@ else:
 
 @app.route("/health", methods=["GET"])
 def health():
+    model_info = {}
+    if crop_model:
+        try:
+            model_info["feature_count"] = crop_model.feature_count_
+            model_info["feature_names"] = crop_model.feature_names_ if hasattr(crop_model, 'feature_names_') else "Not available"
+            model_info["cat_features"] = list(crop_model.get_cat_feature_indices()) if hasattr(crop_model, 'get_cat_feature_indices') else "Not available"
+        except Exception as e:
+            model_info["error"] = str(e)
+    
     return jsonify(
         {
             "status": "ok",
             "crop_model": "ready" if crop_model else f"unavailable: {crop_model_error}",
             "disease_model": "ready" if disease_model else f"unavailable: {disease_model_error}",
+            "model_info": model_info,
         }
     )
 
@@ -139,8 +159,8 @@ def predict():
         return jsonify({"error": "Request must include JSON body."}), 400
 
     try:
-        categorical, numeric = _preprocess_features(payload)
-        prediction = crop_model.predict(numeric)
+        categorical, features_df = _preprocess_features(payload)
+        prediction = crop_model.predict(features_df)
     except ValueError as value_error:
         return jsonify({"error": str(value_error)}), 400
     except Exception as exc:  # pragma: no cover
