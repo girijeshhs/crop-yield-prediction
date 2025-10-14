@@ -1,6 +1,27 @@
 import { useState } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar, Doughnut } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
@@ -178,18 +199,154 @@ function PredictYield() {
       </form>
 
       {result && (
-        <section className="rounded-lg bg-white p-6 shadow space-y-3">
-          <h2 className="text-lg font-semibold text-slate-900">Prediction Result</h2>
-          <p className="text-sm text-slate-700">
-            Expected yield: <span className="font-semibold text-primary">{result.predicted_yield.toFixed(2)}</span>
-          </p>
-          <div>
-            <h3 className="text-sm font-semibold text-slate-800">Recommended Crops</h3>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
-              {result.recommended_crops.map((crop) => (
-                <li key={crop}>{crop}</li>
+        <section className="space-y-6">
+          {/* Main Result Card */}
+          <div className="rounded-lg bg-gradient-to-br from-primary to-accent p-8 shadow-xl text-white">
+            <h2 className="text-3xl font-bold mb-4">Prediction Results</h2>
+            <div className="bg-white/20 backdrop-blur rounded-lg p-6">
+              <p className="text-sm uppercase tracking-wide mb-2">Expected Yield</p>
+              <p className="text-5xl font-extrabold">
+                {result.predicted_yield.toFixed(2)}
+                <span className="text-2xl ml-2">tons/hectare</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Charts Grid */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Yield Comparison Bar Chart */}
+            <div className="rounded-lg bg-white p-6 shadow">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Yield Comparison</h3>
+              <Bar
+                data={{
+                  labels: ["Low", "Average", "Your Prediction", "High", "Optimal"],
+                  datasets: [
+                    {
+                      label: "Yield (tons/hectare)",
+                      data: [
+                        result.predicted_yield * 0.6,
+                        result.predicted_yield * 0.8,
+                        result.predicted_yield,
+                        result.predicted_yield * 1.2,
+                        result.predicted_yield * 1.4,
+                      ],
+                      backgroundColor: [
+                        "rgba(239, 68, 68, 0.8)",
+                        "rgba(251, 146, 60, 0.8)",
+                        "rgba(47, 133, 90, 0.9)",
+                        "rgba(34, 197, 94, 0.8)",
+                        "rgba(16, 185, 129, 0.8)",
+                      ],
+                      borderColor: [
+                        "rgb(239, 68, 68)",
+                        "rgb(251, 146, 60)",
+                        "rgb(47, 133, 90)",
+                        "rgb(34, 197, 94)",
+                        "rgb(16, 185, 129)",
+                      ],
+                      borderWidth: 2,
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false },
+                    title: { display: false },
+                  },
+                  scales: {
+                    y: { beginAtZero: true },
+                  },
+                }}
+              />
+            </div>
+
+            {/* Recommended Crops Distribution */}
+            <div className="rounded-lg bg-white p-6 shadow">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                Recommended Crops Distribution
+              </h3>
+              <Doughnut
+                data={{
+                  labels: result.recommended_crops,
+                  datasets: [
+                    {
+                      data: result.recommended_crops.map((_, i) => 100 / result.recommended_crops.length),
+                      backgroundColor: [
+                        "rgba(47, 133, 90, 0.8)",
+                        "rgba(56, 178, 172, 0.8)",
+                        "rgba(34, 197, 94, 0.8)",
+                        "rgba(16, 185, 129, 0.8)",
+                        "rgba(20, 184, 166, 0.8)",
+                      ],
+                      borderColor: ["#fff"],
+                      borderWidth: 3,
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { position: "bottom" },
+                  },
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Recommended Crops List */}
+          <div className="rounded-lg bg-white p-6 shadow">
+            <h3 className="text-xl font-semibold text-slate-900 mb-4">
+              🌱 Top Recommended Crops for Your Conditions
+            </h3>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {result.recommended_crops.map((crop, index) => (
+                <div
+                  key={crop}
+                  className="flex items-center gap-3 rounded-lg border-2 border-primary/20 bg-primary/5 p-4 transition hover:border-primary/40 hover:shadow-md"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-lg font-bold text-white">
+                    {index + 1}
+                  </span>
+                  <span className="text-base font-semibold text-slate-800">{crop}</span>
+                </div>
               ))}
-            </ul>
+            </div>
+          </div>
+
+          {/* Input Summary */}
+          <div className="rounded-lg bg-white p-6 shadow">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Input Parameters Used</h3>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-sm">
+              <div className="rounded bg-slate-50 p-3">
+                <p className="text-slate-500">Temperature</p>
+                <p className="font-semibold text-slate-900">{form.temperature}°C</p>
+              </div>
+              <div className="rounded bg-slate-50 p-3">
+                <p className="text-slate-500">Humidity</p>
+                <p className="font-semibold text-slate-900">{form.humidity}%</p>
+              </div>
+              <div className="rounded bg-slate-50 p-3">
+                <p className="text-slate-500">Soil Type</p>
+                <p className="font-semibold text-slate-900 capitalize">{form.soil_type}</p>
+              </div>
+              <div className="rounded bg-slate-50 p-3">
+                <p className="text-slate-500">Crop Type</p>
+                <p className="font-semibold text-slate-900 capitalize">{form.crop_type}</p>
+              </div>
+              <div className="rounded bg-slate-50 p-3">
+                <p className="text-slate-500">Water Flow</p>
+                <p className="font-semibold text-slate-900">{form.water_flow} L/min</p>
+              </div>
+              <div className="rounded bg-slate-50 p-3">
+                <p className="text-slate-500">Latitude</p>
+                <p className="font-semibold text-slate-900">{form.latitude}</p>
+              </div>
+              <div className="rounded bg-slate-50 p-3">
+                <p className="text-slate-500">Longitude</p>
+                <p className="font-semibold text-slate-900">{form.longitude}</p>
+              </div>
+            </div>
           </div>
         </section>
       )}
