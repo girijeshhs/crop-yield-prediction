@@ -62,197 +62,107 @@ function PredictYield() {
   };
 
   return (
-    <section className="mx-auto max-w-7xl">
+    <section className="mx-auto max-w-7xl px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* LEFT SIDE - Form */}
         <div className="space-y-6">
           <header>
             <h1 className="text-3xl font-bold text-slate-900">Crop Yield Predictor</h1>
             <p className="mt-2 text-base text-slate-600">
-              Provide current field conditions to estimate yield and receive crop recommendations.
+              Provide current field conditions to estimate yield.
             </p>
           </header>
 
-          <form
-            onSubmit={handleSubmit}
-            className="rounded-lg bg-white p-6 shadow space-y-4"
-          >
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="flex flex-col text-sm font-medium text-slate-700">
-            Temperature (°C)
-            <input
-              type="number"
-              name="temperature"
-              value={form.temperature}
-              onChange={handleChange}
-              required
-              step="0.1"
-              className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </label>
-          <label className="flex flex-col text-sm font-medium text-slate-700">
-            Humidity (%)
-            <input
-              type="number"
-              name="humidity"
-              value={form.humidity}
-              onChange={handleChange}
-              required
-              step="0.1"
-              className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </label>
-          <label className="flex flex-col text-sm font-medium text-slate-700">
-            Soil Type
-            <select
-              name="soil_type"
-              value={form.soil_type}
-              onChange={handleChange}
-              className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              {soilOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col text-sm font-medium text-slate-700">
-            Crop Type
-            <select
-              name="crop_type"
-              value={form.crop_type}
-              onChange={handleChange}
-              className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              {cropOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col text-sm font-medium text-slate-700">
-            Water Flow (L/min)
-            <input
-              type="number"
-              name="water_flow"
-              value={form.water_flow}
-              onChange={handleChange}
-              required
-              step="0.1"
-              className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </label>
-          <label className="flex flex-col text-sm font-medium text-slate-700">
-            Latitude
-            <input
-              type="number"
-              name="latitude"
-              value={form.latitude}
-              onChange={handleChange}
-              required
-              step="0.0001"
-              className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </label>
-          <label className="flex flex-col text-sm font-medium text-slate-700">
-            Longitude
-            <input
-              type="number"
-              name="longitude"
-              value={form.longitude}
-              onChange={handleChange}
-              required
-              step="0.0001"
-              className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </label>
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-primary px-4 py-2 text-white font-semibold shadow hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-primary/60"
-        >
-          {loading ? "Predicting..." : "Predict Yield"}
-        </button>
+          <form onSubmit={handleSubmit} className="rounded-lg bg-white p-6 shadow space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="flex flex-col text-sm font-medium text-slate-700">
+                Temperature (°C)
+                <input type="number" name="temperature" value={form.temperature} onChange={handleChange} required step="0.1" className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              </label>
+              <label className="flex flex-col text-sm font-medium text-slate-700">
+                Humidity (%)
+                <input type="number" name="humidity" value={form.humidity} onChange={handleChange} required step="0.1" className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              </label>
+              <label className="flex flex-col text-sm font-medium text-slate-700">
+                Soil Type
+                <select name="soil_type" value={form.soil_type} onChange={handleChange} className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                  {soilOptions.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
+                </select>
+              </label>
+              <label className="flex flex-col text-sm font-medium text-slate-700">
+                Crop Type
+                <select name="crop_type" value={form.crop_type} onChange={handleChange} className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                  {cropOptions.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
+                </select>
+              </label>
+              <label className="flex flex-col text-sm font-medium text-slate-700">
+                Water Flow (L/min)
+                <input type="number" name="water_flow" value={form.water_flow} onChange={handleChange} required step="0.1" className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              </label>
+              <label className="flex flex-col text-sm font-medium text-slate-700">
+                Latitude
+                <input type="number" name="latitude" value={form.latitude} onChange={handleChange} required step="0.0001" className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              </label>
+              <label className="flex flex-col text-sm font-medium text-slate-700">
+                Longitude
+                <input type="number" name="longitude" value={form.longitude} onChange={handleChange} required step="0.0001" className="mt-1 rounded-md border border-slate-200 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+              </label>
+            </div>
+            <button type="submit" disabled={loading} className="w-full rounded-md bg-primary px-4 py-2 text-white font-semibold shadow hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-primary/60">
+              {loading ? "Predicting..." : "Predict Yield"}
+            </button>
             {loading && <Loader label="Calculating" />}
             {error && <p className="text-sm text-red-600">{error}</p>}
           </form>
         </div>
 
-        {/* RIGHT SIDE - Results */}
         <div className="space-y-6">
           {result ? (
             <>
-              {/* Main Result Card - Large */}
               <div className="rounded-2xl bg-gradient-to-br from-primary to-accent p-8 shadow-2xl text-white text-center">
                 <h2 className="text-xl font-semibold mb-4 opacity-90">Expected Yield</h2>
                 <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6">
-                  <p className="text-6xl font-extrabold mb-2">
-                    {result.predicted_yield.toFixed(2)}
-                  </p>
+                  <p className="text-6xl font-extrabold mb-2">{result.predicted_yield.toFixed(2)}</p>
                   <p className="text-2xl font-medium opacity-90">tons/hectare</p>
                 </div>
               </div>
 
-              {/* Weather Condition vs Yield Chart */}
               <div className="rounded-lg bg-white p-6 shadow">
                 <h3 className="text-lg font-semibold text-slate-900 mb-4">Weather Condition vs Yield</h3>
-                <div className="space-y-4">
-                  {/* Weather bars showing comparative yields */}
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="font-medium text-slate-700">Extreme Weather</span>
-                        <span className="text-slate-600">{(result.predicted_yield * 0.6).toFixed(2)} t/ha</span>
-                      </div>
-                      <div className="h-8 bg-slate-100 rounded-lg overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-red-400 to-red-500 rounded-lg flex items-center justify-end px-3"
-                          style={{ width: '60%' }}
-                        >
-                          <span className="text-xs font-semibold text-white">60%</span>
-                        </div>
-                      </div>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-slate-700">Extreme Weather</span>
+                      <span className="text-slate-600">{(result.predicted_yield * 0.6).toFixed(2)} t/ha</span>
                     </div>
-
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="font-medium text-slate-700">Normal Weather</span>
-                        <span className="text-slate-600">{result.predicted_yield.toFixed(2)} t/ha</span>
-                      </div>
-                      <div className="h-8 bg-slate-100 rounded-lg overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-end px-3 shadow-md"
-                          style={{ width: '100%' }}
-                        >
-                          <span className="text-xs font-semibold text-white">100% (Your Prediction)</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="font-medium text-slate-700">Optimal Weather</span>
-                        <span className="text-slate-600">{(result.predicted_yield * 1.3).toFixed(2)} t/ha</span>
-                      </div>
-                      <div className="h-8 bg-slate-100 rounded-lg overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-lg flex items-center justify-end px-3"
-                          style={{ width: '130%', maxWidth: '100%' }}
-                        >
-                          <span className="text-xs font-semibold text-white">130%</span>
-                        </div>
+                    <div className="h-8 bg-slate-100 rounded-lg overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-red-400 to-red-500 rounded-lg flex items-center justify-end px-3" style={{ width: '60%' }}>
+                        <span className="text-xs font-semibold text-white">60%</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Legend */}
-                  <div className="pt-4 border-t border-slate-200">
-                    <p className="text-xs text-slate-500 italic">
-                      * Based on your input conditions: {form.temperature}°C temperature
-                    </p>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-slate-700">Normal Weather</span>
+                      <span className="text-slate-600">{result.predicted_yield.toFixed(2)} t/ha</span>
+                    </div>
+                    <div className="h-8 bg-slate-100 rounded-lg overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-end px-3 shadow-md" style={{ width: '100%' }}>
+                        <span className="text-xs font-semibold text-white">100% (Your Prediction)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-slate-700">Optimal Weather</span>
+                      <span className="text-slate-600">{(result.predicted_yield * 1.3).toFixed(2)} t/ha</span>
+                    </div>
+                    <div className="h-8 bg-slate-100 rounded-lg overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-lg flex items-center justify-end px-3" style={{ width: '100%' }}>
+                        <span className="text-xs font-semibold text-white">130%</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -260,9 +170,6 @@ function PredictYield() {
           ) : (
             <div className="flex items-center justify-center h-full min-h-[400px] rounded-lg border-2 border-dashed border-slate-200 bg-slate-50">
               <div className="text-center text-slate-400">
-                <svg className="mx-auto h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
                 <p className="text-lg font-medium">Results will appear here</p>
                 <p className="text-sm mt-1">Fill out the form and click Predict Yield</p>
               </div>
