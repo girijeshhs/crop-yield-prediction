@@ -306,7 +306,7 @@ Generated on: ${new Date().toLocaleString()}`;
   ] : [];
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-[#0F1F17] text-white' : 'bg-gradient-to-br from-cloud to-white'}`}>
+    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-slate-900 text-white' : 'bg-background-primary'}`}>
       {/* Background Pattern */}
       <div className="fixed inset-0 opacity-5 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -325,10 +325,10 @@ Generated on: ${new Date().toLocaleString()}`;
         {/* Header with Dark Mode Toggle */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className={`text-4xl font-bold ${darkMode ? 'text-white' : 'text-charcoal'} animate-fade-in`}>
+            <h1 className={`font-display text-4xl font-bold ${darkMode ? 'text-white' : 'text-charcoal'} animate-fade-in`}>
               🌾 Crop Yield Predictor
             </h1>
-            <p className={`mt-2 text-lg ${darkMode ? 'text-mint' : 'text-slate'}`}>
+            <p className={`font-body mt-2 text-lg ${darkMode ? 'text-mint' : 'text-slate'}`}>
               Advanced agricultural analytics powered by machine learning
             </p>
           </div>

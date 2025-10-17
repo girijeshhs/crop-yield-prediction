@@ -120,7 +120,7 @@ Timestamp: ${new Date().toLocaleString()}`;
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-[#0F1F17]' : 'bg-cloud'}`}>
+    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-slate-900' : 'bg-background-primary'}`}>
       {/* Background Pattern */}
       <div className="fixed inset-0 opacity-5 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -139,10 +139,10 @@ Timestamp: ${new Date().toLocaleString()}`;
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className={`text-4xl font-bold ${darkMode ? 'text-white' : 'text-charcoal'} animate-fade-in`}>
+            <h1 className={`font-display text-4xl font-bold ${darkMode ? 'text-white' : 'text-charcoal'} animate-fade-in`}>
               🛡️ Disease Detection
             </h1>
-            <p className={`mt-2 text-lg ${darkMode ? 'text-mint' : 'text-slate'}`}>
+            <p className={`font-body mt-2 text-lg ${darkMode ? 'text-mint' : 'text-slate'}`}>
               Advanced plant disease identification using AI vision
             </p>
           </div>
