@@ -306,15 +306,15 @@ Generated on: ${new Date().toLocaleString()}`;
   ] : [];
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-earth-900 text-white' : 'bg-gradient-to-br from-earth-50 to-earth-100'}`}>
+    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-[#0F1F17] text-white' : 'bg-gradient-to-br from-cloud to-white'}`}>
       {/* Background Pattern */}
       <div className="fixed inset-0 opacity-5 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="leaves" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <path d="M20,50 Q30,30 50,40 Q70,30 80,50 Q70,70 50,60 Q30,70 20,50" fill="#2D5016" opacity="0.3"/>
-              <circle cx="30" cy="30" r="3" fill="#4A7C2C"/>
-              <circle cx="70" cy="70" r="2" fill="#4A7C2C"/>
+              <path d="M20,50 Q30,30 50,40 Q70,30 80,50 Q70,70 50,60 Q30,70 20,50" fill="#1B4332" opacity="0.3"/>
+              <circle cx="30" cy="30" r="3" fill="#2D6A4F"/>
+              <circle cx="70" cy="70" r="2" fill="#2D6A4F"/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#leaves)"/>
@@ -325,10 +325,10 @@ Generated on: ${new Date().toLocaleString()}`;
         {/* Header with Dark Mode Toggle */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className={`text-4xl font-bold ${darkMode ? 'text-white' : 'text-earth-800'} animate-fade-in`}>
+            <h1 className={`text-4xl font-bold ${darkMode ? 'text-white' : 'text-charcoal'} animate-fade-in`}>
               🌾 Crop Yield Predictor
             </h1>
-            <p className={`mt-2 text-lg ${darkMode ? 'text-earth-300' : 'text-earth-600'}`}>
+            <p className={`mt-2 text-lg ${darkMode ? 'text-mint' : 'text-slate'}`}>
               Advanced agricultural analytics powered by machine learning
             </p>
           </div>
@@ -336,8 +336,8 @@ Generated on: ${new Date().toLocaleString()}`;
             onClick={() => setDarkMode(!darkMode)}
             className={`p-3 rounded-full transition-all duration-300 ${
               darkMode
-                ? 'bg-earth-700 hover:bg-earth-600 text-yellow-400'
-                : 'bg-white hover:bg-earth-50 text-earth-700 shadow-soft'
+                ? 'bg-primary-light hover:bg-primary text-yellow-400'
+                : 'bg-white hover:bg-primary/10 text-charcoal shadow-soft'
             }`}
             aria-label="Toggle dark mode"
           >
@@ -352,14 +352,14 @@ Generated on: ${new Date().toLocaleString()}`;
               onSubmit={handleSubmit}
               className={`rounded-2xl backdrop-blur-md ${
                 darkMode
-                  ? 'bg-earth-800/80 border border-earth-700'
+                  ? 'bg-[#1B4332]/80 border border-primary-light/30'
                   : 'bg-white/80 border border-white/20'
               } p-8 shadow-soft space-y-6 animate-fade-in`}
             >
               <div className="grid gap-6 sm:grid-cols-2">
                 {/* Temperature */}
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-earth-200' : 'text-earth-700'}`}>
+                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-mint' : 'text-charcoal'}`}>
                     <Thermometer size={16} />
                     Temperature
                     <span className="text-xs opacity-60">({formValidation.temperature.unit})</span>
@@ -376,8 +376,8 @@ Generated on: ${new Date().toLocaleString()}`;
                     max={formValidation.temperature.max}
                     className={`w-full rounded-xl border px-4 py-3 transition-all duration-200 ${
                       darkMode
-                        ? 'bg-earth-700 border-earth-600 text-white placeholder-earth-400 focus:border-primary focus:ring-2 focus:ring-primary/20'
-                        : 'bg-white border-earth-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                        ? 'bg-[#1B4332] border-primary-light/50 text-white placeholder-mint/60 focus:border-primary-lighter focus:ring-2 focus:ring-primary-lighter/20'
+                        : 'bg-white border-slate/20 focus:border-primary focus:ring-2 focus:ring-primary/20'
                     } ${formErrors.temperature ? 'border-red-400' : ''}`}
                     placeholder="25.0"
                     aria-label="Temperature in Celsius"
@@ -392,7 +392,7 @@ Generated on: ${new Date().toLocaleString()}`;
 
                 {/* Humidity */}
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-earth-200' : 'text-earth-700'}`}>
+                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-mint' : 'text-charcoal'}`}>
                     <Droplets size={16} />
                     Humidity
                     <span className="text-xs opacity-60">({formValidation.humidity.unit})</span>
@@ -409,8 +409,8 @@ Generated on: ${new Date().toLocaleString()}`;
                     max={formValidation.humidity.max}
                     className={`w-full rounded-xl border px-4 py-3 transition-all duration-200 ${
                       darkMode
-                        ? 'bg-earth-700 border-earth-600 text-white placeholder-earth-400 focus:border-primary focus:ring-2 focus:ring-primary/20'
-                        : 'bg-white border-earth-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                        ? 'bg-[#1B4332] border-primary-light/50 text-white placeholder-mint/60 focus:border-primary-lighter focus:ring-2 focus:ring-primary-lighter/20'
+                        : 'bg-white border-slate/20 focus:border-primary focus:ring-2 focus:ring-primary/20'
                     } ${formErrors.humidity ? 'border-red-400' : ''}`}
                     placeholder="65.0"
                     aria-label="Humidity percentage"
@@ -425,7 +425,7 @@ Generated on: ${new Date().toLocaleString()}`;
 
                 {/* Soil Type */}
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-earth-200' : 'text-earth-700'}`}>
+                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-mint' : 'text-charcoal'}`}>
                     <MapPin size={16} />
                     Soil Type
                   </label>
@@ -435,8 +435,8 @@ Generated on: ${new Date().toLocaleString()}`;
                     onChange={handleChange}
                     className={`w-full rounded-xl border px-4 py-3 transition-all duration-200 ${
                       darkMode
-                        ? 'bg-earth-700 border-earth-600 text-white focus:border-primary focus:ring-2 focus:ring-primary/20'
-                        : 'bg-white border-earth-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                        ? 'bg-[#1B4332] border-primary-light/50 text-white focus:border-primary-lighter focus:ring-2 focus:ring-primary-lighter/20'
+                        : 'bg-white border-slate/20 focus:border-primary focus:ring-2 focus:ring-primary/20'
                     }`}
                     aria-label="Soil type selection"
                   >
@@ -450,7 +450,7 @@ Generated on: ${new Date().toLocaleString()}`;
 
                 {/* Crop Type */}
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-earth-200' : 'text-earth-700'}`}>
+                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-mint' : 'text-charcoal'}`}>
                     <Wheat size={16} />
                     Crop Type
                   </label>
@@ -460,8 +460,8 @@ Generated on: ${new Date().toLocaleString()}`;
                     onChange={handleChange}
                     className={`w-full rounded-xl border px-4 py-3 transition-all duration-200 ${
                       darkMode
-                        ? 'bg-earth-700 border-earth-600 text-white focus:border-primary focus:ring-2 focus:ring-primary/20'
-                        : 'bg-white border-earth-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                        ? 'bg-[#1B4332] border-primary-light/50 text-white focus:border-primary-lighter focus:ring-2 focus:ring-primary-lighter/20'
+                        : 'bg-white border-slate/20 focus:border-primary focus:ring-2 focus:ring-primary/20'
                     }`}
                     aria-label="Crop type selection"
                   >
@@ -475,7 +475,7 @@ Generated on: ${new Date().toLocaleString()}`;
 
                 {/* Water Flow */}
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-earth-200' : 'text-earth-700'}`}>
+                  <label className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-mint' : 'text-charcoal'}`}>
                     <Zap size={16} />
                     Water Flow
                     <span className="text-xs opacity-60">({formValidation.water_flow.unit})</span>
@@ -492,8 +492,8 @@ Generated on: ${new Date().toLocaleString()}`;
                     max={formValidation.water_flow.max}
                     className={`w-full rounded-xl border px-4 py-3 transition-all duration-200 ${
                       darkMode
-                        ? 'bg-earth-700 border-earth-600 text-white placeholder-earth-400 focus:border-primary focus:ring-2 focus:ring-primary/20'
-                        : 'bg-white border-earth-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                        ? 'bg-[#1B4332] border-primary-light/50 text-white placeholder-mint/60 focus:border-primary-lighter focus:ring-2 focus:ring-primary-lighter/20'
+                        : 'bg-white border-slate/20 focus:border-primary focus:ring-2 focus:ring-primary/20'
                     } ${formErrors.water_flow ? 'border-red-400' : ''}`}
                     placeholder="45.0"
                     aria-label="Water flow in liters per minute"
@@ -508,7 +508,7 @@ Generated on: ${new Date().toLocaleString()}`;
 
                 {/* Location */}
                 <div className="space-y-2 sm:col-span-2">
-                  <label className={`flex items-center justify-between text-sm font-semibold ${darkMode ? 'text-earth-200' : 'text-earth-700'}`}>
+                  <label className={`flex items-center justify-between text-sm font-semibold ${darkMode ? 'text-mint' : 'text-charcoal'}`}>
                     <span className="flex items-center gap-2">
                       <Navigation size={16} />
                       Location Coordinates
@@ -519,7 +519,7 @@ Generated on: ${new Date().toLocaleString()}`;
                       disabled={loading}
                       className={`flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
                         darkMode
-                          ? 'bg-primary/20 text-primary hover:bg-primary/30'
+                          ? 'bg-primary-lighter/20 text-primary-lighter hover:bg-primary-lighter/30'
                           : 'bg-primary/10 text-primary hover:bg-primary/20'
                       } disabled:opacity-50`}
                       aria-label="Get current location"
@@ -541,8 +541,8 @@ Generated on: ${new Date().toLocaleString()}`;
                         max={formValidation.latitude.max}
                         className={`w-full rounded-xl border px-3 py-2 text-sm transition-all duration-200 ${
                           darkMode
-                            ? 'bg-earth-700 border-earth-600 text-white placeholder-earth-400 focus:border-primary focus:ring-2 focus:ring-primary/20'
-                            : 'bg-white border-earth-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                            ? 'bg-[#1B4332] border-primary-light/50 text-white placeholder-mint/60 focus:border-primary-lighter focus:ring-2 focus:ring-primary-lighter/20'
+                            : 'bg-white border-slate/20 focus:border-primary focus:ring-2 focus:ring-primary/20'
                         } ${formErrors.latitude ? 'border-red-400' : ''}`}
                         placeholder="28.6139"
                         aria-label="Latitude"
@@ -561,8 +561,8 @@ Generated on: ${new Date().toLocaleString()}`;
                         max={formValidation.longitude.max}
                         className={`w-full rounded-xl border px-3 py-2 text-sm transition-all duration-200 ${
                           darkMode
-                            ? 'bg-earth-700 border-earth-600 text-white placeholder-earth-400 focus:border-primary focus:ring-2 focus:ring-primary/20'
-                            : 'bg-white border-earth-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                            ? 'bg-[#1B4332] border-primary-light/50 text-white placeholder-mint/60 focus:border-primary-lighter focus:ring-2 focus:ring-primary-lighter/20'
+                            : 'bg-white border-slate/20 focus:border-primary focus:ring-2 focus:ring-primary/20'
                         } ${formErrors.longitude ? 'border-red-400' : ''}`}
                         placeholder="77.2090"
                         aria-label="Longitude"
@@ -586,8 +586,8 @@ Generated on: ${new Date().toLocaleString()}`;
                   disabled={loading || Object.keys(formErrors).length > 0}
                   className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                     darkMode
-                      ? 'bg-primary hover:bg-primary-light text-white shadow-glow disabled:bg-earth-600'
-                      : 'bg-gradient-to-r from-primary to-primary-light text-white shadow-soft hover:shadow-glow disabled:bg-earth-300'
+                      ? 'bg-primary-lighter hover:bg-primary text-white shadow-glow disabled:bg-[#1B4332]'
+                      : 'bg-gradient-to-r from-primary to-primary-light text-white shadow-soft hover:shadow-glow disabled:bg-slate/60'
                   } disabled:cursor-not-allowed transform hover:scale-105`}
                   aria-label="Predict crop yield"
                 >
@@ -609,8 +609,8 @@ Generated on: ${new Date().toLocaleString()}`;
                   onClick={fillRandomData}
                   className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                     darkMode
-                      ? 'bg-earth-700 hover:bg-earth-600 text-earth-200 border border-earth-600'
-                      : 'bg-white hover:bg-earth-50 text-earth-700 border border-earth-200'
+                      ? 'bg-[#1B4332] hover:bg-primary-light/20 text-mint border border-primary-light/30'
+                      : 'bg-white hover:bg-slate/5 text-charcoal border border-slate/20'
                   }`}
                   aria-label="Fill with random sample data"
                 >
@@ -708,10 +708,10 @@ Generated on: ${new Date().toLocaleString()}`;
                 {/* Weather Comparison Chart */}
                 <div className={`rounded-2xl backdrop-blur-md ${
                   darkMode
-                    ? 'bg-earth-800/80 border border-earth-700'
+                    ? 'bg-[#1B4332]/80 border border-primary-light/30'
                     : 'bg-white/80 border border-white/20'
                 } p-6 shadow-soft`}>
-                  <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-earth-800'}`}>
+                  <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-charcoal'}`}>
                     <TrendingUp size={18} />
                     Weather Condition Impact
                   </h3>
@@ -744,10 +744,10 @@ Generated on: ${new Date().toLocaleString()}`;
                 {/* Parameter Impact Radar Chart */}
                 <div className={`rounded-2xl backdrop-blur-md ${
                   darkMode
-                    ? 'bg-earth-800/80 border border-earth-700'
+                    ? 'bg-[#1B4332]/80 border border-primary-light/30'
                     : 'bg-white/80 border border-white/20'
                 } p-6 shadow-soft`}>
-                  <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-earth-800'}`}>
+                  <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-charcoal'}`}>
                     <Info size={18} />
                     Parameter Impact Analysis
                   </h3>
@@ -786,10 +786,10 @@ Generated on: ${new Date().toLocaleString()}`;
                 {predictionHistory.length > 1 && (
                   <div className={`rounded-2xl backdrop-blur-md ${
                     darkMode
-                      ? 'bg-earth-800/80 border border-earth-700'
+                      ? 'bg-[#1B4332]/80 border border-primary-light/30'
                       : 'bg-white/80 border border-white/20'
                   } p-6 shadow-soft`}>
-                    <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-earth-800'}`}>
+                    <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-charcoal'}`}>
                       <TrendingUp size={18} />
                       Prediction History
                     </h3>
@@ -825,10 +825,10 @@ Generated on: ${new Date().toLocaleString()}`;
                 {/* Recommendations */}
                 <div className={`rounded-2xl backdrop-blur-md ${
                   darkMode
-                    ? 'bg-earth-800/80 border border-earth-700'
+                    ? 'bg-[#1B4332]/80 border border-primary-light/30'
                     : 'bg-white/80 border border-white/20'
                 } p-6 shadow-soft`}>
-                  <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-earth-800'}`}>
+                  <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-charcoal'}`}>
                     <CheckCircle size={18} />
                     Farming Recommendations
                   </h3>
@@ -864,18 +864,18 @@ Generated on: ${new Date().toLocaleString()}`;
               </div>
             ) : (
               <div className={`flex items-center justify-center h-full min-h-[400px] rounded-2xl border-2 border-dashed ${
-                darkMode ? 'border-earth-600 bg-earth-800/50' : 'border-earth-200 bg-earth-50/50'
+                darkMode ? 'border-primary-light/50 bg-[#1B4332]/50' : 'border-slate/20 bg-slate/5'
               } backdrop-blur-sm`}>
                 <div className="text-center">
                   <div className={`w-16 h-16 mx-auto mb-4 rounded-full ${
-                    darkMode ? 'bg-earth-700' : 'bg-white'
+                    darkMode ? 'bg-[#1B4332]' : 'bg-white'
                   } flex items-center justify-center`}>
-                    <TrendingUp size={32} className={darkMode ? 'text-earth-400' : 'text-earth-400'} />
+                    <TrendingUp size={32} className={darkMode ? 'text-mint' : 'text-primary'} />
                   </div>
-                  <p className={`text-lg font-medium mb-2 ${darkMode ? 'text-white' : 'text-earth-700'}`}>
+                  <p className={`text-lg font-medium mb-2 ${darkMode ? 'text-white' : 'text-charcoal'}`}>
                     Results will appear here
                   </p>
-                  <p className={`text-sm ${darkMode ? 'text-earth-300' : 'text-earth-500'}`}>
+                  <p className={`text-sm ${darkMode ? 'text-mint/80' : 'text-slate'}`}>
                     Fill out the form and click Predict Yield to see detailed analytics
                   </p>
                 </div>

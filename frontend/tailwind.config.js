@@ -5,9 +5,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#2D5016",
-        "primary-light": "#4A7C2C",
-        accent: "#38b2ac",
+        // Core Agricultural Colors
+        primary: {
+          DEFAULT: "#1B4332", // Forest green (dark)
+          light: "#2D6A4F",   // Sage green (medium)
+          lighter: "#52B788", // Moss green (light)
+        },
+        accent: {
+          clay: "#A0522D",    // Warm clay
+          gold: "#E9C46A",    // Harvest gold
+          soil: "#6C4E31",    // Rich soil
+        },
+        mint: "#D8F3DC",      // Mint (pale)
+        // Neutrals
+        charcoal: "#264653",  // Charcoal (primary text)
+        slate: "#6B7280",     // Slate gray (secondary text)
+        cloud: "#F8FAFC",     // Cloud (page backgrounds)
+        // Legacy colors for backward compatibility
         earth: {
           50: "#f9faf8",
           100: "#f0f4ed",

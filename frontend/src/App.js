@@ -6,7 +6,7 @@ import DiseaseDetection from "./pages/DiseaseDetection";
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-cloud">
       <Navbar />
       <main className="px-4 py-10 sm:px-6 lg:px-8">
         <Routes>
