@@ -4,7 +4,7 @@ import FeatureCards from "../components/FeatureCards";
 
 function Home() {
   return (
-    <div className="min-h-screen bg-background-primary">
+    <div className="min-h-screen bg-background">
       <Hero />
       <StatsSection />
       <FeatureCards />

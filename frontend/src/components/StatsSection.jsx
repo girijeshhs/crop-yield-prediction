@@ -29,13 +29,13 @@ const StatsSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-background-secondary">
+    <section className="py-24 bg-accent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-text mb-6">
             Proven Results That Matter
           </h2>
-          <p className="font-body text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Join thousands of farmers who have transformed their operations with our AI-powered platform
           </p>
         </div>
@@ -44,40 +44,39 @@ const StatsSection = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
+              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100"
             >
-              <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-secondary to-secondary-light rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                <stat.icon size={32} className="text-white" />
+              <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-6">
+                <stat.icon size={32} className="text-primary" />
               </div>
-              <div className="font-display text-4xl font-bold text-gray-900 mb-2">
+              <div className="text-4xl font-bold text-text mb-2">
                 {stat.value}
               </div>
-              <div className="font-heading text-lg font-semibold text-gray-900 mb-3">
+              <div className="text-lg font-semibold text-text mb-3">
                 {stat.label}
               </div>
-              <div className="font-body text-gray-600">
+              <div className="text-gray-600">
                 {stat.description}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Additional Trust Indicators */}
         <div className="mt-20 text-center">
-          <div className="inline-flex items-center gap-8 px-8 py-4 bg-gray-50 rounded-2xl">
+          <div className="inline-flex items-center gap-8 px-8 py-4 bg-white rounded-2xl shadow-lg border border-gray-100">
             <div className="text-center">
-              <div className="font-display text-2xl font-bold text-gray-900">$2.5M+</div>
-              <div className="font-body text-sm text-gray-600">Cost Savings</div>
+              <div className="text-2xl font-bold text-text">$2.5M+</div>
+              <div className="text-sm text-gray-600">Cost Savings</div>
             </div>
             <div className="w-px h-12 bg-gray-300"></div>
             <div className="text-center">
-              <div className="font-display text-2xl font-bold text-gray-900">15%</div>
-              <div className="font-body text-sm text-gray-600">Yield Increase</div>
+              <div className="text-2xl font-bold text-text">15%</div>
+              <div className="text-sm text-gray-600">Yield Increase</div>
             </div>
             <div className="w-px h-12 bg-gray-300"></div>
             <div className="text-center">
-              <div className="font-display text-2xl font-bold text-gray-900">99.9%</div>
-              <div className="font-body text-sm text-gray-600">Uptime</div>
+              <div className="text-2xl font-bold text-text">99.9%</div>
+              <div className="text-sm text-gray-600">Uptime</div>
             </div>
           </div>
         </div>
