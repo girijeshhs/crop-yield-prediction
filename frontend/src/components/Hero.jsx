@@ -1,6 +1,17 @@
 import { ArrowRight, Sprout } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handlePredictYield = () => {
+    navigate('/predict');
+  };
+
+  const handleDiseaseDetection = () => {
+    navigate('/disease');
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -23,11 +34,17 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <button className="px-8 py-4 rounded-xl font-semibold text-white bg-primary hover:bg-secondary transition-colors duration-300 flex items-center gap-2">
+            <button
+              onClick={handlePredictYield}
+              className="px-8 py-4 rounded-xl font-semibold text-white bg-primary hover:bg-secondary transition-colors duration-300 flex items-center gap-2"
+            >
               <ArrowRight size={20} />
               Predict Yield
             </button>
-            <button className="flex items-center gap-2 px-8 py-4 border-2 border-primary text-primary rounded-xl bg-transparent hover:bg-primary hover:text-white transition-all duration-300 font-semibold">
+            <button
+              onClick={handleDiseaseDetection}
+              className="flex items-center gap-2 px-8 py-4 border-2 border-primary text-primary rounded-xl bg-transparent hover:bg-primary hover:text-white transition-all duration-300 font-semibold"
+            >
               <Sprout size={20} />
               Disease Detection
             </button>
