@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import PredictYield from "./pages/PredictYield";
+import PredictYield from "./pages/PredictYieldEnhanced";
 import DiseaseDetection from "./pages/DiseaseDetection";
 
 function App() {
