@@ -359,15 +359,57 @@ function PredictYieldClean() {
             {result && (
               <div className="bg-white rounded-lg border border-gray-200 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Yield Comparison</h3>
-                <ResponsiveContainer width="100%" height={250}>
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis dataKey="name" stroke="#64748b" />
-                    <YAxis stroke="#64748b" />
-                    <Tooltip />
-                    <Bar dataKey="yield" fill="#10b981" radius={[8, 8, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                
+                {/* Custom Thin Bar Chart with Labels */}
+                <div className="space-y-4">
+                  {/* Poor Condition */}
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-1 flex items-center">
+                      <div className="w-full bg-gray-100 rounded-full h-3 relative">
+                        <div 
+                          className="bg-red-400 h-3 rounded-full transition-all duration-500"
+                          style={{ width: `${(chartData[0].yield / (result.predicted_yield * 1.3)) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="w-64 text-sm text-gray-700">
+                      <span className="font-medium">Poor Condition Yield:</span>
+                      <span className="ml-2 text-red-600 font-semibold">{chartData[0].yield.toFixed(2)} tons/hectare</span>
+                    </div>
+                  </div>
+
+                  {/* Normal Condition */}
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-1 flex items-center">
+                      <div className="w-full bg-gray-100 rounded-full h-3 relative">
+                        <div 
+                          className="bg-primary-500 h-3 rounded-full transition-all duration-500"
+                          style={{ width: `${(chartData[1].yield / (result.predicted_yield * 1.3)) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="w-64 text-sm text-gray-700">
+                      <span className="font-medium">Normal Condition Yield:</span>
+                      <span className="ml-2 text-primary-600 font-semibold">{chartData[1].yield.toFixed(2)} tons/hectare</span>
+                    </div>
+                  </div>
+
+                  {/* Optimal Condition */}
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-1 flex items-center">
+                      <div className="w-full bg-gray-100 rounded-full h-3 relative">
+                        <div 
+                          className="bg-emerald-600 h-3 rounded-full transition-all duration-500"
+                          style={{ width: '100%' }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="w-64 text-sm text-gray-700">
+                      <span className="font-medium">Optimal Condition Yield:</span>
+                      <span className="ml-2 text-emerald-600 font-semibold">{chartData[2].yield.toFixed(2)} tons/hectare</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
