@@ -72,9 +72,45 @@ function DiseaseDetectionClean() {
         
         const PLANT_ID_API_KEY = process.env.REACT_APP_PLANT_ID_API_KEY;
         
-        // If no API key, show helpful message
+        // If no API key, use demo mode directly
         if (!PLANT_ID_API_KEY) {
-          throw new Error('API_KEY_MISSING');
+          console.log('\n🔑 To enable real plant disease detection:\n' +
+                     '1. Visit https://web.plant.id/ and sign up for free\n' +
+                     '2. Get your API key (500 free requests/month)\n' +
+                     '3. Create a .env file in the frontend folder\n' +
+                     '4. Add: REACT_APP_PLANT_ID_API_KEY=your_api_key_here\n' +
+                     '5. Restart the development server (npm start)\n');
+          
+          setError('Demo mode: Plant.id API key not configured');
+          
+          // Use demo/mock analysis
+          const mockDiseases = [
+            { name: 'Healthy', confidence: 95, severity: 'none' },
+            { name: 'Early Blight', confidence: 87, severity: 'medium' },
+            { name: 'Late Blight', confidence: 82, severity: 'high' },
+            { name: 'Bacterial Spot', confidence: 79, severity: 'medium' }
+          ];
+
+          const randomDisease = mockDiseases[Math.floor(Math.random() * mockDiseases.length)];
+          
+          setResult({
+            disease: randomDisease.name,
+            confidence: randomDisease.confidence,
+            severity: randomDisease.severity,
+            recommendations: randomDisease.name === 'Healthy' ? [
+              'Your plant appears healthy',
+              'Continue regular monitoring',
+              'Maintain current care routine'
+            ] : [
+              'Remove affected leaves immediately',
+              'Apply appropriate fungicide',
+              'Improve air circulation',
+              'Avoid overhead watering'
+            ]
+          });
+          
+          setLoading(false);
+          return;
         }
         
         try {
@@ -161,20 +197,9 @@ function DiseaseDetectionClean() {
           setLoading(false);
         } catch (apiError) {
           console.error('Plant.id API error:', apiError);
+          setError('API request failed. Using demo mode.');
           
-          // Show helpful error message if API key is missing
-          if (apiError.message === 'API_KEY_MISSING') {
-            setError('Plant.id API key not configured. Using demo mode. See console for setup instructions.');
-            console.log('\n🔑 To enable real plant disease detection:\n' +
-                       '1. Visit https://web.plant.id/ and sign up for free\n' +
-                       '2. Get your API key (500 free requests/month)\n' +
-                       '3. Create a .env file in the frontend folder\n' +
-                       '4. Add: REACT_APP_PLANT_ID_API_KEY=your_api_key_here\n' +
-                       '5. Restart the development server (npm start)\n');
-          } else {
-            setError('Using offline analysis mode');
-          }
-          
+          // Fallback to demo analysis
           const mockDiseases = [
             { name: 'Healthy', confidence: 95, severity: 'none' },
             { name: 'Early Blight', confidence: 87, severity: 'medium' },
