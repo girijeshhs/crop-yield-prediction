@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import PredictYield from "./pages/PredictYieldEnhanced";
-import DiseaseDetection from "./pages/DiseaseDetection";
+import Navbar from "./components/NavbarClean";
+import Home from "./pages/HomeClean";
+import PredictYield from "./pages/PredictYieldClean";
+import DiseaseDetection from "./pages/DiseaseDetectionClean";
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <main>
         <Routes>

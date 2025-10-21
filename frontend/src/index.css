@@ -1,105 +1,69 @@
-/* Import Typography - Agriculture Modern Design System */
-@import '@fontsource/plus-jakarta-sans/400.css';
-@import '@fontsource/plus-jakarta-sans/500.css';
-@import '@fontsource/plus-jakarta-sans/600.css';
-@import '@fontsource/plus-jakarta-sans/700.css';
-@import '@fontsource/plus-jakarta-sans/800.css';
+/* Clean SaaS Design System */
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/inter/700.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
+  * {
+    @apply border-gray-200;
   }
 
   body {
-    @apply bg-slate-900 text-slate-50;
+    @apply bg-white text-gray-800;
     font-family: 'Inter', system-ui, sans-serif;
-    min-height: 100vh;
-    font-weight: 400;
-    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-  }
-
-  button, a {
-    font-family: 'Inter', sans-serif;
+    @apply text-gray-900 font-semibold;
   }
 }
 
-@layer utilities {
-  .scroll-snap-y {
-    scroll-snap-type: y mandatory;
+@layer components {
+  /* Clean button styles */
+  .btn-primary {
+    @apply bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors duration-200;
   }
 
-  .scroll-snap-align-start {
-    scroll-snap-align: start;
+  .btn-secondary {
+    @apply bg-white text-gray-700 px-4 py-2 rounded-lg font-medium border border-gray-200 hover:bg-gray-50 transition-colors duration-200;
   }
 
-  /* Smooth scroll for sections */
-  .smooth-scroll {
-    scroll-behavior: smooth;
+  /* Clean input styles */
+  .input-field {
+    @apply w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
   }
 
-  /* Glass-morphism effect */
-  .glass {
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-lg border border-gray-200 p-6;
   }
 
-  /* Gradient text */
-  .gradient-text {
-    background: linear-gradient(135deg, #f59e0b, #10b981, #059669);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Agriculture gradient backgrounds */
-  .gradient-agriculture {
-    background: linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%);
-  }
-
-  .gradient-harvest {
-    background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
-  }
-
-  /* Enhanced glass morphism */
-  .glass-card {
-    @apply backdrop-blur-md bg-slate-800/50 border border-white/10 rounded-2xl shadow-xl;
-  }
-
-  /* Form focus states */
-  .input-focus {
-    @apply focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 focus:outline-none transition-all duration-300;
+  .card-hover {
+    @apply bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200;
   }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  @apply bg-gray-50;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #10b981;
-  border-radius: 5px;
+  @apply bg-gray-300 rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #059669;
+  @apply bg-gray-400;
 }
