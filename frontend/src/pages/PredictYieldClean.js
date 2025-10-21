@@ -83,16 +83,61 @@ function PredictYieldClean() {
     }
   };
 
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setFormData({
-          ...formData,
-          latitude: position.coords.latitude.toFixed(4),
-          longitude: position.coords.longitude.toFixed(4)
-        });
-      });
+  const getLocation = async () => {
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported by your browser');
+      return;
     }
+
+    setLoading(true);
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude.toFixed(4);
+        const lon = position.coords.longitude.toFixed(4);
+        
+        // Update location immediately
+        setFormData(prev => ({
+          ...prev,
+          latitude: lat,
+          longitude: lon
+        }));
+
+        // Fetch weather data using OpenWeatherMap API (free tier)
+        try {
+          // Using OpenWeatherMap's free API - you can get a free API key at openweathermap.org
+          // For demo purposes, using a public endpoint that doesn't require auth
+          const weatherResponse = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&temperature_unit=celsius`
+          );
+          
+          if (weatherResponse.ok) {
+            const weatherData = await weatherResponse.json();
+            
+            setFormData(prev => ({
+              ...prev,
+              temperature: weatherData.current.temperature_2m.toFixed(1),
+              humidity: weatherData.current.relative_humidity_2m.toFixed(1),
+              latitude: lat,
+              longitude: lon
+            }));
+            
+            setError(null);
+          } else {
+            // If weather API fails, just keep the location
+            setError('Location set, but could not fetch weather data automatically');
+          }
+        } catch (err) {
+          setError('Location set, but could not fetch weather data automatically');
+        } finally {
+          setLoading(false);
+        }
+      },
+      (error) => {
+        setError('Unable to retrieve your location. Please enter manually.');
+        setLoading(false);
+      }
+    );
   };
 
   const downloadReport = () => {
@@ -255,9 +300,10 @@ function PredictYieldClean() {
                     <button
                       type="button"
                       onClick={getLocation}
-                      className="text-sm text-primary-500 hover:text-primary-600"
+                      disabled={loading}
+                      className="text-sm text-primary-500 hover:text-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Use Current Location
+                      {loading ? 'Fetching...' : 'Use Current Location'}
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
