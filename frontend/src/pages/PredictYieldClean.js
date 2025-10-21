@@ -166,23 +166,19 @@ function PredictYieldClean() {
     { name: 'Optimal', yield: result.predicted_yield * 1.3 }
   ] : [];
 
-  // Crop recommendation details
+  // Crop recommendation details with ranking explanations
   const cropDetails = {
     Wheat: {
-      description: "Ideal for moderate climates with consistent moisture. Requires well-drained loamy soil and temperatures between 15-25°C. Best suited for regions with 50-75cm annual rainfall.",
-      icon: "🌾"
+      reason: "Matches your current soil type and temperature range perfectly. Your location's climate conditions align well with wheat's optimal growing requirements."
     },
     Maize: {
-      description: "Thrives in warm conditions with good sunlight. Needs fertile, well-drained soil and temperatures of 18-27°C. Requires adequate water during tasseling and grain filling stages.",
-      icon: "🌽"
+      reason: "Well-suited for your temperature and water availability parameters. The soil conditions in your area support strong maize cultivation and growth."
     },
     Soybean: {
-      description: "Adaptable legume that enriches soil nitrogen. Grows best in warm climates with 20-30°C temperature. Prefers well-drained loamy soils with neutral pH levels.",
-      icon: "🫘"
+      reason: "Good nitrogen-fixing legume for your soil type. Your climate parameters fall within the acceptable range for soybean production."
     },
     Rice: {
-      description: "Water-intensive crop requiring flooded conditions. Optimal in humid climates with 20-35°C temperatures. Needs clayey or loamy soil with good water retention capacity.",
-      icon: "🌾"
+      reason: "Compatible with your humidity levels and water flow rate. Your region's conditions can support rice cultivation with proper irrigation management."
     }
   };
 
@@ -450,29 +446,30 @@ function PredictYieldClean() {
                   </div>
                 </div>
 
-                {/* Detailed Crop Recommendations */}
+                {/* Ranked Crop Recommendations */}
                 {result.recommended_crops && (
                   <div className="bg-white rounded-lg border border-gray-200 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      Recommended Crops for Your Conditions
+                      Recommended Crops (Ranked)
                     </h3>
                     <div className="space-y-4">
                       {result.recommended_crops.map((crop, index) => {
                         const details = cropDetails[crop] || {
-                          icon: "🌱",
-                          description: "A suitable crop for your current agricultural conditions and climate parameters."
+                          reason: "Suitable crop for your current agricultural conditions and climate parameters."
                         };
                         return (
                           <div
                             key={index}
-                            className="p-4 bg-primary-50 rounded-lg border border-primary-100 hover:border-primary-200 transition-colors"
+                            className="pb-4 border-b border-gray-200 last:border-b-0 last:pb-0"
                           >
                             <div className="flex items-start space-x-3">
-                              <span className="text-2xl">{details.icon}</span>
+                              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center font-semibold text-sm">
+                                {index + 1}
+                              </div>
                               <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900 mb-2">{crop}</h4>
+                                <h4 className="font-semibold text-gray-900 mb-1">{crop}</h4>
                                 <p className="text-sm text-gray-600 leading-relaxed">
-                                  {details.description}
+                                  {details.reason}
                                 </p>
                               </div>
                             </div>
