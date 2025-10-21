@@ -121,6 +121,26 @@ function PredictYieldClean() {
     { name: 'Optimal', yield: result.predicted_yield * 1.3 }
   ] : [];
 
+  // Crop recommendation details
+  const cropDetails = {
+    Wheat: {
+      description: "Ideal for moderate climates with consistent moisture. Requires well-drained loamy soil and temperatures between 15-25°C. Best suited for regions with 50-75cm annual rainfall.",
+      icon: "🌾"
+    },
+    Maize: {
+      description: "Thrives in warm conditions with good sunlight. Needs fertile, well-drained soil and temperatures of 18-27°C. Requires adequate water during tasseling and grain filling stages.",
+      icon: "🌽"
+    },
+    Soybean: {
+      description: "Adaptable legume that enriches soil nitrogen. Grows best in warm climates with 20-30°C temperature. Prefers well-drained loamy soils with neutral pH levels.",
+      icon: "🫘"
+    },
+    Rice: {
+      description: "Water-intensive crop requiring flooded conditions. Optimal in humid climates with 20-35°C temperatures. Needs clayey or loamy soil with good water retention capacity.",
+      icon: "🌾"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -130,9 +150,11 @@ function PredictYieldClean() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Form Section */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Left Column - Form and Chart */}
+          <div className="space-y-6">
+            {/* Form Section */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 {/* Temperature */}
                 <div>
@@ -270,28 +292,45 @@ function PredictYieldClean() {
                 </div>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full btn-primary py-3 flex items-center justify-center"
-              >
-                {loading ? (
-                  <span>Processing...</span>
-                ) : (
-                  <>
-                    <TrendingUp className="h-5 w-5 mr-2" />
-                    Predict Yield
-                  </>
-                )}
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full btn-primary py-3 flex items-center justify-center"
+                >
+                  {loading ? (
+                    <span>Processing...</span>
+                  ) : (
+                    <>
+                      <TrendingUp className="h-5 w-5 mr-2" />
+                      Predict Yield
+                    </>
+                  )}
+                </button>
+              </form>
+            </div>
+
+            {/* Yield Comparison Chart - Below Form */}
+            {result && (
+              <div className="bg-white rounded-lg border border-gray-200 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Yield Comparison</h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="name" stroke="#64748b" />
+                    <YAxis stroke="#64748b" />
+                    <Tooltip />
+                    <Bar dataKey="yield" fill="#10b981" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </div>
 
-          {/* Results Section */}
+          {/* Right Column - Results and Recommendations */}
           <div className="space-y-6">
             {result ? (
               <>
-                {/* Yield Card */}
+                {/* Predicted Yield Card */}
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-semibold text-gray-900">Predicted Yield</h2>
@@ -323,33 +362,35 @@ function PredictYieldClean() {
                   </div>
                 </div>
 
-                {/* Chart */}
-                <div className="bg-white rounded-lg border border-gray-200 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Yield Comparison</h3>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                      <XAxis dataKey="name" stroke="#64748b" />
-                      <YAxis stroke="#64748b" />
-                      <Tooltip />
-                      <Bar dataKey="yield" fill="#10b981" radius={[8, 8, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Recommendations */}
+                {/* Detailed Crop Recommendations */}
                 {result.recommended_crops && (
                   <div className="bg-white rounded-lg border border-gray-200 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Recommended Crops</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {result.recommended_crops.map((crop, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-sm"
-                        >
-                          {crop}
-                        </span>
-                      ))}
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Recommended Crops for Your Conditions
+                    </h3>
+                    <div className="space-y-4">
+                      {result.recommended_crops.map((crop, index) => {
+                        const details = cropDetails[crop] || {
+                          icon: "🌱",
+                          description: "A suitable crop for your current agricultural conditions and climate parameters."
+                        };
+                        return (
+                          <div
+                            key={index}
+                            className="p-4 bg-primary-50 rounded-lg border border-primary-100 hover:border-primary-200 transition-colors"
+                          >
+                            <div className="flex items-start space-x-3">
+                              <span className="text-2xl">{details.icon}</span>
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-gray-900 mb-2">{crop}</h4>
+                                <p className="text-sm text-gray-600 leading-relaxed">
+                                  {details.description}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
