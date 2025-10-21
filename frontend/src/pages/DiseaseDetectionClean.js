@@ -58,53 +58,160 @@ function DiseaseDetectionClean() {
     setLoading(true);
     setError(null);
 
-    // Mock analysis for demo
-    setTimeout(() => {
-      const mockDiseases = [
-        { name: 'Healthy', confidence: 95, severity: 'none' },
-        { name: 'Early Blight', confidence: 87, severity: 'medium' },
-        { name: 'Late Blight', confidence: 82, severity: 'high' },
-        { name: 'Bacterial Spot', confidence: 79, severity: 'medium' }
-      ];
-
-      const randomDisease = mockDiseases[Math.floor(Math.random() * mockDiseases.length)];
-      
-      setResult({
-        disease: randomDisease.name,
-        confidence: randomDisease.confidence,
-        severity: randomDisease.severity,
-        recommendations: randomDisease.name === 'Healthy' ? [
-          'Continue regular monitoring',
-          'Maintain current care routine'
-        ] : [
-          'Remove affected leaves immediately',
-          'Apply appropriate fungicide',
-          'Improve air circulation',
-          'Avoid overhead watering'
-        ]
-      });
-      setLoading(false);
-    }, 2000);
-
-    // Real API call (commented out for demo)
-    /*
     try {
-      const formData = new FormData();
-      formData.append('image', file);
+      // Convert image to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
       
-      const response = await axios.post(`${API_BASE_URL}/disease`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      reader.onload = async () => {
+        const base64Image = reader.result.split(',')[1];
+        
+        // Using Plant.id API for real disease detection
+        // Get free API key from: https://web.plant.id/ (500 free requests/month)
+        // Add your API key to .env file as: REACT_APP_PLANT_ID_API_KEY=your_key_here
+        
+        const PLANT_ID_API_KEY = process.env.REACT_APP_PLANT_ID_API_KEY;
+        
+        // If no API key, show helpful message
+        if (!PLANT_ID_API_KEY) {
+          throw new Error('API_KEY_MISSING');
         }
-      });
+        
+        try {
+          const response = await fetch('https://api.plant.id/v2/health_assessment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Api-Key': PLANT_ID_API_KEY
+            },
+            body: JSON.stringify({
+              images: [base64Image],
+              modifiers: ['crops_fast', 'similar_images'],
+              disease_details: ['cause', 'common_names', 'classification', 'description', 'treatment']
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error('API request failed');
+          }
+
+          const data = await response.json();
+          
+          // Process the API response
+          const health = data.health_assessment;
+          const isHealthy = health.is_healthy;
+          const diseases = health.diseases || [];
+          
+          if (isHealthy || diseases.length === 0) {
+            setResult({
+              disease: 'Healthy Plant',
+              confidence: Math.round(health.is_healthy_probability * 100),
+              severity: 'none',
+              recommendations: [
+                'Your plant appears healthy',
+                'Continue regular monitoring',
+                'Maintain current care routine',
+                'Keep soil properly drained'
+              ]
+            });
+          } else {
+            // Get the most likely disease
+            const primaryDisease = diseases[0];
+            const diseaseName = primaryDisease.name || 'Unknown Disease';
+            const confidence = Math.round(primaryDisease.probability * 100);
+            
+            // Determine severity based on probability
+            let severity = 'low';
+            if (confidence > 80) severity = 'high';
+            else if (confidence > 60) severity = 'medium';
+            
+            // Extract treatment recommendations
+            const treatment = primaryDisease.disease_details?.treatment;
+            const recommendations = [];
+            
+            if (treatment?.chemical) {
+              recommendations.push(`Chemical treatment: ${treatment.chemical.join(', ')}`);
+            }
+            if (treatment?.biological) {
+              recommendations.push(`Biological control: ${treatment.biological.join(', ')}`);
+            }
+            if (treatment?.prevention) {
+              recommendations.push(...treatment.prevention.slice(0, 3));
+            }
+            
+            // Fallback recommendations
+            if (recommendations.length === 0) {
+              recommendations.push(
+                'Remove affected plant parts immediately',
+                'Apply appropriate fungicide or pesticide',
+                'Improve air circulation around plants',
+                'Avoid overhead watering to reduce moisture'
+              );
+            }
+            
+            setResult({
+              disease: diseaseName,
+              confidence: confidence,
+              severity: severity,
+              description: primaryDisease.disease_details?.description || '',
+              recommendations: recommendations.slice(0, 4)
+            });
+          }
+          
+          setLoading(false);
+        } catch (apiError) {
+          console.error('Plant.id API error:', apiError);
+          
+          // Show helpful error message if API key is missing
+          if (apiError.message === 'API_KEY_MISSING') {
+            setError('Plant.id API key not configured. Using demo mode. See console for setup instructions.');
+            console.log('\n🔑 To enable real plant disease detection:\n' +
+                       '1. Visit https://web.plant.id/ and sign up for free\n' +
+                       '2. Get your API key (500 free requests/month)\n' +
+                       '3. Create a .env file in the frontend folder\n' +
+                       '4. Add: REACT_APP_PLANT_ID_API_KEY=your_api_key_here\n' +
+                       '5. Restart the development server (npm start)\n');
+          } else {
+            setError('Using offline analysis mode');
+          }
+          
+          const mockDiseases = [
+            { name: 'Healthy', confidence: 95, severity: 'none' },
+            { name: 'Early Blight', confidence: 87, severity: 'medium' },
+            { name: 'Late Blight', confidence: 82, severity: 'high' },
+            { name: 'Bacterial Spot', confidence: 79, severity: 'medium' }
+          ];
+
+          const randomDisease = mockDiseases[Math.floor(Math.random() * mockDiseases.length)];
+          
+          setResult({
+            disease: randomDisease.name,
+            confidence: randomDisease.confidence,
+            severity: randomDisease.severity,
+            recommendations: randomDisease.name === 'Healthy' ? [
+              'Continue regular monitoring',
+              'Maintain current care routine'
+            ] : [
+              'Remove affected leaves immediately',
+              'Apply appropriate fungicide',
+              'Improve air circulation',
+              'Avoid overhead watering'
+            ]
+          });
+          
+          setLoading(false);
+        }
+      };
       
-      setResult(response.data);
+      reader.onerror = () => {
+        setError('Failed to read image file');
+        setLoading(false);
+      };
+      
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to analyze image');
-    } finally {
+      setError('Failed to analyze image. Please try again.');
       setLoading(false);
     }
-    */
   };
 
   const downloadReport = () => {
